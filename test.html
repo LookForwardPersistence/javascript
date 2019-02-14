@@ -196,6 +196,21 @@ Vue.directive("btn-control", {
 
             this.printOutput()
 
+            console.log('拷贝')
+            var arrOrigin = [40,35,32,33]
+            var arrClone  = this.clone(arrOrigin)
+            arrClone.sort((a,b)=>a-b)
+            console.log(arrOrigin)
+            console.log(arrClone)
+            
+            var objOrigin = {a:1,b:2,c:3}
+            var objClone = this.clone(objOrigin)
+            objClone.a =10
+            var o=objOrigin
+            o.b =20
+            console.log(objOrigin)
+            console.log(objClone)
+
         },
         mounted(){
       /*     this.deepLearn(1,2,3,4,5,6);
@@ -211,6 +226,26 @@ Vue.directive("btn-control", {
             console.log(changePeople) // Fan*/
         },
         methods: {
+            /*对javascript 5中数据类型克隆*/
+            clone(obj){
+               var buf
+               if(obj instanceof Array){
+                buf =[]
+                var i = obj.length
+                while(i--){
+                  buf[i]=this.clone(obj[i])
+                }
+                return buf
+               } else if(obj instanceof Object) {
+                buf = {}
+                for(var k in obj){
+                    buf[k] = this.clone(obj[k])
+                }
+                return buf
+               } else {
+                return obj
+               }
+            },
             printOutput(){
                 console.log('延时输出')
                 for (var i = 1; i <= 5; ++i){
