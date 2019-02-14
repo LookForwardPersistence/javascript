@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width,initial-scale=1,maxmium-scale=1,user-scalable=no">
+<head>
+    <meta charset="UTF-8">
+    <title>javascript</title>
+    <link rel="stylesheet" type="text/css" href="../css/iview.css">
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <script src="https://unpkg.com/flyio/dist/fly.min.js"></script>
+    <!-- <script type="text/javascript" src="js/jquery.min.js"></script> -->
+    <script type="text/javascript" src="../js/vue/vue.min.js"></script>
+    <script type="text/javascript" src="../js/iview/iview.min.js"></script>
+    <style type="text/css">
+        .tip-item{
+            height: 120px;
+            background: #fdf9d5;
+            font-size: 14px;
+            color: #FF9800;
+            padding: 10px;
+            padding-left: 25px;
+        }
+        .img-item{
+            position: absolute;
+            margin-left: -23px;
+            margin-top: -7px;
+            font-size: 23px;
+        }
+        .info-item{
+            font-size: 16px;
+            color: green;
+            text-align: center;
+            margin-top:3rem; 
+        }
+        .tip-show{
+            margin-top: 4rem;
+            background: red;
+            color: #fff;
+            height: 20px;
+            font-size: 12px;
+            text-align:center;
+            line-height:20px;
+        }
+        .img-wechat{
+            display: -webkit-box;
+            -webkit-box-pack: center;
+            height: 10rem;
+            text-align: center;
+           /* background-image: url('https://ebus.csot.tcl.com/dawn/images/wechat/hr.jpg');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            transform: scale(1);
+            -ms-transform:scale(1);
+            -moz-transform:scale(1);
+            -webkit-transform:scale(1);
+            -o-transform:scale(1);*/
+        }
+    </style>
+</head>
+<div id="app" class="contain">
+  
+    <div class="submit-row" >
+        <div class="submit-button-item" v-btn-control="argumentPrint([1,3,2])">
+            候选人注册<Icon type="ios-add" />
+        </div>
+        <div class="submit-button-item" @click="promiseSetTimeout">
+            PromiseAndSetTimeOut<Icon type="ios-add"/>
+        </div>
+        <div class="submit-button-item" @click="throttle">
+            throttle<Icon type="ios-add"/>
+        </div>
+    </div>
+    <!-- <Spin size="large" fix></Spin> -->
+    <div class="info-item">
+        {{tip}}
+    </div>
+    </div>
+</div>
+</div>
+<script>
+    fly.config.baseURL ="https://ebus.csot.tcl.com/testrecruit"
+     // 限制按钮点击事件，在结果返回以前不能继续点击
+Vue.directive("btn-control", {
+    // 插入dom 时做的事情
+    inserted: function(el, bind) {
+        console.log(bind)
+        el.addEventListener("click", () => {
+            el.disabled = true;
+            bind.value().then(res => {
+                el.disabled = false;
+            });
+        });
+    }
+});
+
+    new Vue({
+        el:"#app",
+        data:{
+            tip: '',
+            isDisable: false,
+            pageIndex: 66
+        },
+        created: function() {
+            let [a,b,c] = [1,2,3]
+            let {people,name}={people: 'Dawn',name: 'Dianer'}
+            console.log('a:' + a)
+            console.log('people:' + people)
+            let back
+            ({back:back}={back:3})
+            console.log('back:' + back)
+            var obj={
+                p:["hi",{y:'hello'}]
+            }
+            let {p:[x,{y}]} = obj
+            console.log('x=' + x)
+            console.log('y=' + y)
+            // console.log('p=' + p)
+            let {q:z=3} = {q:5}
+            console.log('z=' +z)
+            // console.log('q=' +q)
+            // ({k}={k:22})
+            // console.log('k=' + k)
+            let {log,sin,cos} = Math
+            console.log(log(1))
+            console.log(sin(90))
+            console.log(cos(90))
+            
+            // 属性表达式
+            let arr = [5,8,10]
+            let {0:first,[arr.length-1]:last,1:second} = arr
+            console.log('first='+first)
+            console.log('last='+last)
+            console.log('second='+second)
+
+            const [a1,b1,c1,d1,e1] = 'great'
+            console.log(a1)
+            console.log(b1)
+            console.log(c1)
+            console.log(d1)
+            console.log(e1)
+
+            console.log([[1,2],[3,4]].map(([a,b])=>a+b))
+            console.log("\u0061")
+            console.log("\u{41}\u{42}\u{43}")
+            console.log("\u{51}\u{52}\u{53}")
+            console.log('\u{1F680}' === '\uD83D\uDE80')
+
+            let s= 'hello world!'
+            console.log(s.startsWith('world',6))
+            console.log(s.endsWith('hello',5))
+            console.log(s.includes('hello',0))
+
+            console.log(s.repeat(2))
+           
+            console.log(`Dawn,${this.fn()}`)
+
+            console.log(String.raw`aa\n${2+5}`)
+
+            var arrBubble = [8,1,4,9,3]
+            var result = this.bubbleSort(arrBubble)
+            console.log('arr1:' + result);
+            var arrBubble2 = [9,10,4,9,3]
+            // var result2 = this.bubbleSort2(arrBubble2)
+            // console.log('arr2:' + result2);
+            var arr3 = [5,3,8,6,7]
+            var result3=this.selectionSort(arr3)
+            console.log('selectionSort:'+result3)
+            console.log(Object.prototype.toString.call(arr).slice())
+            console.log(Object.prototype.toString.call(arr).slice(8,-1))
+            var arr3 = [1,5,13,8,16,7]
+            console.log('insertSort:'+this.insertSort(arr3))
+            var start = new Date();
+             var end = new Date(start.getFullYear() + 1, 0, 1);
+            var elapse = Math.floor((end - start) / 1000);
+            console.log(elapse)
+            var initArr = [2,[3,4,5],[7,5],9,[2,11]]
+            var res=[]
+            this.beacomeArr(initArr,res)
+            console.log(initArr)
+            console.log(res)
+            console.log(Array.isArray(initArr))
+            console.log(this.isArray(''))
+            console.log(this.isArray({}))
+            console.log(this.isArray(initArr))
+
+            console.log('函数判断')
+            console.log(typeof initArr === 'founction')
+
+            // var resSort= res.sort((a,b)=>a-b)
+            console.log('去重复')
+            console.log(this.normalize(res))
+            var fillArr=[]
+            this.fillArray(fillArr,[2,100])
+            console.log('100随机数')
+            console.log(fillArr.sort((a,b)=>a-b))
+            console.log(this.normalize(fillArr))
+
+            this.printOutput()
+
+        },
+        mounted(){
+      /*     this.deepLearn(1,2,3,4,5,6);
+           let person = new Object;
+           this.setName(person)
+            console.log(person.name)
+            let people={
+                name: 'Dainer',
+                age:30
+            }
+           let changePeople = this.changePerson(people)
+            console.log(people) // Dawn
+            console.log(changePeople) // Fan*/
+        },
+        methods: {
+            printOutput(){
+                console.log('延时输出')
+                for (var i = 1; i <= 5; ++i){
+                    setTimeout(function () {
+                      console.log(i + ' ');
+                    }, 0);
+                  (function (i) {
+                    setTimeout(function () {
+                      console.log(i + ' ');
+                    }, 10);
+                  }(i));
+                }
+                
+                console.log('立即执行')
+                for(var j=1;j<=3;j++){
+       setTimeout((function(a){  //改成立即执行函数
+           console.log(a);   
+       })(j),0); 
+    };
+            },
+            /*填充100个随机数*/
+            fillArray(arr,[start=1,end=100]){
+               if (end<=start){
+                end = start +100
+               }
+               let width = end -start
+               var i
+               for(i=100;i>0;--i){
+                // arr.push(''+Math.floor(Math.random()*width)+start)
+                arr.push(''+Math.floor(Math.random()*100))
+               }
+               return arr
+            },
+            /*去重复*/
+            normalize(arr){
+                if(arr || Array.isArray(arr)){
+                    var i,len,map ={}
+                    for(i=arr.length-1;i>=0;--i){
+                            console.log(map)
+                            console.log(arr[i] in map)
+                        if(arr[i] in map){
+                            console.log('splice before:')
+                            console.log(arr)
+                            arr.splice(i,1)
+                            console.log('splice affer')
+                            console.log(arr)
+                        }else {
+                            map[arr[i]] = true
+                            // map[arr[i]] = false
+                        }
+                    }
+                }
+                return arr
+            },
+                /**
+            }
+         * 将一个表单元素序列化为可提交的字符串
+         *
+         * @param {FormElement} form 需要序列化的表单元素
+         * @return {string} 表单序列化后的字符串
+         */
+        serializeForm(form) {
+          if (!form || form.nodeName.toUpperCase() !== 'FORM') {
+            return;
+          }
+
+          var result = [];
+
+          var i, len;
+          var field, fieldName, fieldType;
+
+          for (i = 0, len = form.length; i < len; ++i) {
+            field = form.elements[i];
+            fieldName = field.name;
+            fieldType = field.type;
+
+            if (field.disabled || !fieldName) {
+              continue;
+            } // enf if
+
+            switch (fieldType) {
+              case 'text':
+              case 'password':
+              case 'hidden':
+              case 'textarea':
+                result.push(encodeURIComponent(fieldName) + '=' +
+                    encodeURIComponent(field.value));
+                break;
+
+              case 'radio':
+              case 'checkbox':
+                if (field.checked) {
+                  result.push(encodeURIComponent(fieldName) + '=' +
+                    encodeURIComponent(field.value));
+                }
+                break;
+
+              case 'select-one':
+              case 'select-multiple':
+                for (var j = 0, jLen = field.options.length; j < jLen; ++j) {
+                  if (field.options[j].selected) {
+                    result.push(encodeURIComponent(fieldName) + '=' +
+                      encodeURIComponent(field.options[j].value || field.options[j].text));
+                  }
+                } // end for
+                break;
+
+              case 'file':
+              case 'submit':
+                break; // 是否处理？
+
+              default:
+                break;
+            } // end switch
+          } // end for
+
+            return result.join('&');
+        },
+        /**
+            * 查询指定窗口的视口尺寸，如果不指定窗口，查询当前窗口尺寸
+            **/
+            getViewportSize(w) {
+                w = w || window;
+
+                // IE9及标准浏览器中可使用此标准方法
+                if ('innerHeight' in w) {
+                    return {
+                        width: w.innerWidth,
+                        height: w.innerHeight
+                    };
+                }
+
+                var d = w.document;
+                // IE 8及以下浏览器在标准模式下
+                if (document.compatMode === 'CSS1Compat') {
+                    return {
+                        width: d.documentElement.clientWidth,
+                        height: d.documentElement.clientHeight
+                    };
+                }
+
+                // IE8及以下浏览器在怪癖模式下
+                return {
+                    width: d.body.clientWidth,
+                    height: d.body.clientHeight
+                };
+            },
+            isArray(arg){
+              if(typeof arg === 'object'){
+                return Object.prototype.toString.call(arg) === '[object Array]'
+              }
+              return false
+            },
+            beacomeArr(data,result){
+               var i,item,len
+               for(i=0,len=data.length;i<len;i++){
+                  item = data[i]
+                  if(typeof item === 'number'){
+                    result.push(item)
+                } else {
+                    this.beacomeArr(item,result)
+                }
+
+               }
+            },
+            insertSort(arr){
+              if(Object.prototype.toString.call(arr).slice(8,-1) === 'Array'){
+                var key
+                for(var i=1;i<arr.length;i++){
+                    key = arr[i]
+                    var j = i-1
+                    while(j>=0&&arr[j]>key){
+                       arr[j+1] = arr[j]
+                       j--
+                    }
+                    arr[j+1]=key
+                    }
+                return arr
+              }else{
+                console.log('arr is not Array')
+              }
+            },
+            selectionSort(arr){
+               var len = arr.length
+               var mainIndex,temp
+               for(var i=0;i<len-1;i++){
+                   mainIndex = i
+                  for(var j=i+1;j<len;j++){
+                    if (arr[j]<arr[mainIndex]){
+                        mainIndex = j
+                    }
+                  }
+                  temp = arr[i]
+                  arr[i]=arr[mainIndex]
+                  arr[mainIndex] =temp;
+               }
+               return arr
+            },
+            bubbleSort2(arr){
+               console.log('改进冒泡排序2')
+               var i = arr.length-1
+               while(i>0){
+                var pos = 0
+                for(var j=0;j<i; i++){
+                  if (arr[j]>arr[j+1]){
+                    pos = j;
+                    [arr[j],arr[j+1]] = [arr[j+1],arr[j]]
+                  }
+                }
+                i = pos
+               }
+               return arr
+            },
+            bubbleSort(arr){
+               var low = 0
+               var hight = arr.length-1
+               var temp,j
+               console.log('改进冒泡排序耗时')
+               while(low<hight){
+                 console.log(arr)
+                 for(j=0;j<hight;j++){
+                    if (arr[j]>arr[j+1]){
+                        [arr[j],arr[j+1]]=[arr[j+1],arr[j]]
+                    }
+                 }
+                  --hight
+               /*  for(j=hight;j>low;--j){
+                    if (arr[j]<arr[j-1]){
+                        [arr[j],arr[j-1]] = [arr[j-1],arr[j]]
+                    }
+                 }*/
+               }
+               return arr;
+            },
+            fn(){
+               return 'come on!'
+            },
+            changePerson(person){
+               person.name='Dawn'
+               person={
+                name:'Fan',
+                age:30
+               }
+               return person
+            },
+            setName(obj){
+                obj.name='Dawn'
+                obj= new Object // 局部对象  在函数执行完后即刻被销毁
+                obj.name ='Fan'
+
+                let v={a:'Dawn'}
+                    v={b:'Fan'}
+                    console.log(v)
+            },
+            list(){
+                let fuc = Array.prototype.slice.call(arguments)
+                // 升序rw
+                let sortAsc=fuc.sort((a,b)=>{
+                    return a-b
+                })
+              return sortAsc
+            }, 
+            addArguments(arg1,arg2){
+               return arg1 + arg2
+            },
+            deepLearn(){
+                var oStringObject = new String("hello world");
+                console.log(oStringObject.slice(3,-1))
+                console.log(oStringObject.substring(5,-1))
+                console.log('list:' + this.list(1,2,3))
+                console.log('addArguments:' + this.addArguments(2,6))
+                // 预设值
+                let preList = this.list.bind(null,10);
+                let preAdd = this.addArguments.bind(null,10)
+                console.log(preList())
+                console.log(preAdd(5))
+                console.log(preList(2,3))
+                console.log(preAdd(2,10))
+                //  Array.prototype.slice.call(arguments) arguments转为数组
+                console.log('arguments')
+                console.log(arguments)
+                let arg = Array.prototype.slice.call(arguments)
+                console.log('arguments to Array')
+                console.log(arg)
+                //this.pageIndex = 66 //在浏览器中this指向 ‘window’
+                // Inherited 继承
+                let inherited = {
+                    pageIndex: 1,
+                    count: function(){
+                        return this.pageIndex + 1
+                    }
+                }
+                 console.log(inherited.count)
+                let child = Object.create(inherited);
+                console.log('inherited to child')
+                child.pageIndex = 5
+                console.log(child.count())
+
+                //bind
+                let unboundGetCount=inherited.count;
+                console.log('unboundGetCount')
+                console.log(unboundGetCount())
+                let boundGetCount = unboundGetCount.bind(inherited)
+                console.log('boundGetCount')
+                console.log(boundGetCount())
+
+                // 偏函数
+
+            },
+             argumentPrint(){
+               let args = arguments[0].sort(function(a,b){return a-b})
+              console.log(args)
+            /*  return this.axios.post(url, data)
+                     .then((res) => {
+                     if (res.data.errcode == 0) {
+                    } else {
+                  }
+                }).catch((err) => {
+              });*/
+            },
+            promiseSetTimeout(){
+            // will print 3 4 6 5 2
+            // setImmediate(function(){ console.log(1); },0); 
+            setTimeout(function(){ 
+                console.log(2); 
+             },0); 
+            new Promise(function(resolve){ 
+                console.log(3); 
+                resolve(); 
+                console.log(4);
+                }).then(function(){ 
+                    console.log(5); 
+                }); 
+                console.log(6); 
+                // process.nextTick(function(){
+                //     console.log(7); });
+                //      console.log(8);
+            },
+            throttle(fn, period) {
+                var bingo = true, timer = -1;
+                return function() {
+                    if (bingo) {
+                        var args = Array.prototype.slice.call(arguments, 0);
+                        var ret = fn.call(this, args);
+                        bingo = false;
+                        clearTimeout(timer);
+                        timer = setTimeout(function() {
+                            bingo = true;
+                        }, period);
+                        return ret;
+                    }
+                }
+},
+            getQueryString(prama) {
+                var reg = new RegExp("(^|&)" + prama + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return decodeURIComponent(r[2]);
+                }
+                return null;
+            }
+        }
+    })
+
+</script>
+
+</body>
+</html>
