@@ -54,6 +54,79 @@
             -webkit-transform:scale(1);
             -o-transform:scale(1);*/
         }
+        a:link{
+            color:blue;
+        }
+        a:visited{
+            color: red;
+        }
+        a:hover{
+            color:green;
+        }
+        a:active{
+            color: orange;
+        }
+
+        /*宽灯片效果*/
+        .ani{
+            width: 480px;
+            height: 320px;
+            margin: 50px auto;
+            overflow: hidden;
+            box-shadow: 0 0 5px rgba(0,0,0,1);
+            -webkit-animation-name:"loops";
+            -webkit-animation-duration:20s;
+            -webkit-animation-iteration-count:infinite;
+        }
+        @-webkit-keyframes "loops"{
+            0%{
+                background: url('https://ebus.csot.tcl.com/rwp/images/wechat/boy.png') no-repeat;
+                background-size: contain;
+                background-position: center;
+            }
+            25%{
+                background: url('https://ebus.csot.tcl.com/rwp/images/wechat/girl.png') no-repeat;
+                background-size: contain;
+                background-position: center;
+            }
+            50%{
+                background: url('http://img15.3lian.com/2015/f2/60/d/142.jpg') no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
+            75%{
+                background: url('http://img02.tooopen.com/images/20160408/tooopen_sy_158723161481.jpg') no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
+            100%{
+                background: url('http://pic31.nipic.com/20130701/12270044_163555570320_2.jpg') no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
+        }
+
+        .reset{
+            padding-left: 20px;
+            counter-reset: dawn;
+            line-height: 1.6;
+            color: #666;
+        }
+       /* .counter{
+            counter-reset: dawn;
+            font-size: 24px;
+            color: #cd0000;
+        }*/
+        .counter:before{
+            content: counters(dawn,'-') '.';
+            /*content: counter(dawn,lower-roman);*/ 
+            counter-increment: dawn;
+            font-family: arial black;
+        }
+
+
+        /*.reset { padding-left: 20px; counter-reset: wangxiaoer; line-height: 1.6; color: #666; }*/
+/*.counter:before { content: counters(wangxiaoer, '-') '. '; counter-increment: wangxiaoer; font-family: arial black; }*/
     </style>
 </head>
 <div id="app" class="contain">
@@ -73,8 +146,24 @@
     <div class="info-item">
         {{tip}}
     </div>
-    </div>
-</div>
+   <a href="#">超链接</a>
+   <div class="reset">
+   <div class="counter">css计算器
+     <div class="reset">
+         <div class="counter">css计算器
+            <div class="reset">
+                <div class="counter">css计算器</div>
+            </div>
+        </div>
+         <div class="counter">css计算器</div>
+     </div>
+   </div>
+   <div class="counter">css计算器</div>
+   </div>
+
+   <div class="ani"></div>
+
+
 </div>
 <script>
     fly.config.baseURL ="https://ebus.csot.tcl.com/testrecruit"
